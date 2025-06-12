@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+:root {
+  --background: rgb(23,25,29);
+  --foreground: #ededed;
+}
+
+body {
+  @apply bg-background text-white font-sans antialiased;
+}
+
+model-viewer {
+  background-color: transparent;
+  --poster-color: transparent;
+}
