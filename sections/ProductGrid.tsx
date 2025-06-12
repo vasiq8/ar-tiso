@@ -8,7 +8,7 @@ import ARModal from "@/components/ARModal";
 
 interface ProductGridProps {
   products: Product[];
-  highlightedProductId?: string;
+  highlightedProductId?: string | null;  // allow null
 }
 
 type FoodType = 'veg' | 'non-veg' | 'egg';
@@ -71,7 +71,10 @@ const formatPrice = (price: number, currency: string, calories?: number) => {
   );
 };
 
-export default function ProductGrid({ products, highlightedProductId }: ProductGridProps) {
+export default function ProductGrid({
+  products,
+  highlightedProductId,
+}: ProductGridProps) {
   const { language } = useLanguage();
   const [selectedAR, setSelectedAR] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -80,8 +83,11 @@ export default function ProductGrid({ products, highlightedProductId }: ProductG
   useEffect(() => {
     if (highlightedProductId) {
       setBlinkedId(highlightedProductId);
-      const timeout = setTimeout(() => setBlinkedId(null), 1200);
-      return () => clearTimeout(timeout);
+      // scroll into view
+      const el = document.getElementById(`product-${highlightedProductId}`);
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      const t = setTimeout(() => setBlinkedId(null), 1200);
+      return () => clearTimeout(t);
     }
   }, [highlightedProductId]);
 
@@ -94,6 +100,7 @@ export default function ProductGrid({ products, highlightedProductId }: ProductG
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((product) => (
           <div
+            id={`product-${product._id}`}    // Add id
             key={product.uniqueId || `${product._id}-${Math.random()}`}
             className={`group rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] relative h-[240px] ${blinkedId === product._id ? "animate-blink" : ""}`}
           >

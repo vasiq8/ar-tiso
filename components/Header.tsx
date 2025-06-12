@@ -11,11 +11,19 @@ interface HeaderProps {
   companyName: string;
   categories: any[];
   onCategorySelect: (categoryRef: string) => void;
+  onProductSelect: (productId: string) => void; // Add this
   allProducts: Product[];
   activeCategory: string; // Add this prop
 }
 
-export default function Header({ companyName, categories, onCategorySelect, allProducts, activeCategory }: HeaderProps) {
+export default function Header({
+  companyName,
+  categories,
+  onCategorySelect,
+  allProducts,
+  activeCategory,
+  onProductSelect, // Add here
+}: HeaderProps) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleCategorySelect = (categoryRef: string) => {
@@ -51,12 +59,16 @@ export default function Header({ companyName, categories, onCategorySelect, allP
             />
           </div>
         </div>
-        <Categories 
+        <Categories
           categories={categories}
           activeCategory={activeCategory}
           onCategorySelect={handleCategorySelect}
         />
-        <Search onSearch={() => {}} products={allProducts} />
+        <Search
+          onSearch={() => {}}
+          products={allProducts}
+          onProductSelect={onProductSelect} // Pass through
+        />
       </header>
       <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>

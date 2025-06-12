@@ -6,10 +6,15 @@ import Image from "next/image";
 
 interface SearchProps {
   onSearch: (query: string) => void;
+  onProductSelect: (productId: string) => void; // Add this
   products: Product[];
 }
 
-export default function Search({ onSearch, products = [] }: SearchProps) {
+export default function Search({
+  onSearch,
+  onProductSelect, // Add here
+  products = [],
+}: SearchProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (value: string) => {
@@ -68,6 +73,11 @@ export default function Search({ onSearch, products = [] }: SearchProps) {
               <div
                 key={product.uniqueId || `${product._id}-${Math.random()}`}
                 className="flex items-center gap-4 p-4 hover:bg-[#2A2B30] cursor-pointer"
+                onClick={() => {
+                  onProductSelect(product._id); // invoke
+                  setSearchQuery("");
+                  onSearch("");
+                }}
               >
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden">
                   <Image

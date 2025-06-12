@@ -8,6 +8,7 @@ import ProductGrid from "@/sections/ProductGrid";
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [menuData, setMenuData] = useState<any>(null);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +36,16 @@ export default function Home() {
     });
   }, [selectedCategory]);
 
+  const handleProductSelect = (productId: string) => {
+    // find product to get its category
+    const prod = menuData.allProducts.find((p: any) => p._id === productId);
+    if (prod) {
+      setSelectedCategory(prod.categoryRef);
+      // after category switch, trigger highlight
+      setTimeout(() => setSelectedProductId(productId), 200);
+    }
+  };
+
   if (!menuData) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -54,11 +65,15 @@ export default function Home() {
         companyName={menuData.companyName}
         categories={menuData.categories}
         onCategorySelect={setSelectedCategory}
+        onProductSelect={handleProductSelect}
         allProducts={menuData.allProducts || []}
-        activeCategory={selectedCategory} // Pass this prop
+        activeCategory={selectedCategory}
       />
       <main className="container mx-auto p-8 pt-64">
-        <ProductGrid products={products} />
+        <ProductGrid
+          products={products}
+          highlightedProductId={selectedProductId}
+        />
       </main>
     </div>
   );
