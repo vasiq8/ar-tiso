@@ -22,7 +22,10 @@ function isAndroid() {
 }
 
 export default function ARModal({ isOpen, onClose, glbUrl, productName }: ARModalProps) {
-  const arModelRef = useRef<any>(null);
+  const arModelRef = useRef<HTMLElement & {
+    activateAR?: () => void;
+    enterAR?: () => void;
+  }>(null);
 
   // Android: open Scene Viewer directly and close modal
   useEffect(() => {
@@ -67,7 +70,7 @@ export default function ARModal({ isOpen, onClose, glbUrl, productName }: ARModa
           </h2>
         )}
         <div className="flex items-center justify-center">
-          {/* @ts-ignore */}
+          {/* @ts-expect-error - model-viewer element type not fully typed */}
           <model-viewer
             ref={arModelRef}
             src={glbUrl}

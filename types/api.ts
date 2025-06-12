@@ -23,7 +23,7 @@ export interface ProductVariant {
 
 export interface Product {
   _id: string;
-  uniqueId?: string;  // Add this line
+  uniqueId?: string;
   name: LocalizedText;
   image: string;
   categoryRef: string;
@@ -44,4 +44,12 @@ export interface MenuData {
     categories: Category[];
     products?: Product[];
   } | null;
+}
+
+export interface ProcessedMenuData {
+  companyName: string;
+  categories: Category[];
+  productsByCategory: Record<string, Product[]>;
+  allProducts: Product[];
+  locationRef: string | null;
 }

@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { menuApi } from "@/services/api";
 import Header from "@/components/Header";
 import ProductGrid from "@/sections/ProductGrid";
+import { ProcessedMenuData } from "@/types/api";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [menuData, setMenuData] = useState<any>(null);
+  const [menuData, setMenuData] = useState<ProcessedMenuData | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,8 +38,7 @@ export default function Home() {
   }, [selectedCategory]);
 
   const handleProductSelect = (productId: string) => {
-    // find product to get its category
-    const prod = menuData.allProducts.find((p: any) => p._id === productId);
+    const prod = menuData?.allProducts.find((p) => p._id === productId);
     if (prod) {
       setSelectedCategory(prod.categoryRef);
       // after category switch, trigger highlight

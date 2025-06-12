@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Settings from "./Settings";
 import Categories from "@/sections/Categories";
 import Search from "@/sections/Search";
-import { Product } from "@/types/api";
+import { Product, Category } from "@/types/api";
 
 interface HeaderProps {
   companyName: string;
-  categories: any[];
+  categories: Category[];
   onCategorySelect: (categoryRef: string) => void;
   onProductSelect: (productId: string) => void; // Add this
   allProducts: Product[];
