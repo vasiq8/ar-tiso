@@ -5,6 +5,8 @@ import { menuApi } from "@/services/api";
 import Header from "@/components/Header";
 import ProductGrid from "@/sections/ProductGrid";
 import { ProcessedMenuData } from "@/types/api";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { PageLayout } from "@/components/ui/layout/PageLayout";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -47,11 +49,7 @@ export default function Home() {
   };
 
   if (!menuData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        Loading...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   const products =
@@ -60,7 +58,7 @@ export default function Home() {
       : [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageLayout>
       <Header
         companyName={menuData.companyName}
         categories={menuData.categories}
@@ -75,6 +73,6 @@ export default function Home() {
           highlightedProductId={selectedProductId}
         />
       </main>
-    </div>
+    </PageLayout>
   );
 }
