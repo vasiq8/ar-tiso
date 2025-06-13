@@ -47,15 +47,18 @@ const getProductPrice = (product: Product): number => {
   return product.variants[0].price || 0;
 };
 
-const formatPrice = (price: number, currency: string, calories?: number) => {
+const formatPrice = (price: number, currency: string, language: 'en' | 'ar', calories?: number) => {
   const symbol = currency === "₹" ? "₹" : "SAR";
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex flex-col gap-2 ${language === 'ar' ? 'items-end' : ''}`}>
       <div className="text-white font-semibold flex items-baseline gap-1">
         <span className="text-[10px] sm:text-sm">{symbol}</span>
         <span className="text-sm sm:text-lg">{price.toFixed(2)}</span>
       </div>
       <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-400">
+          {calories ? `${calories} cal` : "--"}
+        </span>
         <Image
           src="/assets/icon.svg"
           alt="Product icon"
@@ -63,9 +66,6 @@ const formatPrice = (price: number, currency: string, calories?: number) => {
           height={12}
           className="object-contain"
         />
-        <span className="text-sm text-gray-400">
-          {calories ? `${calories} cal` : "--"}
-        </span>
       </div>
     </div>
   );
@@ -119,19 +119,22 @@ export default function ProductGrid({
                   />
                 </div>
               </div>
-              <div className="p-3 -mt-2 space-y-1 relative">
-                {/* Text sizes */}
-                <h3 className="text-sm sm:text-lg font-semibold text-white/90 truncate flex items-center gap-2">
+              <div className={`p-3 -mt-2 space-y-1 relative ${language === 'ar' ? 'text-right rtl' : ''}`}>
+                <h3 className={`text-sm sm:text-lg font-semibold text-white/90 truncate flex items-center ${
+                  language === 'ar' 
+                    ? 'flex-row-reverse justify-start gap-2 w-full' 
+                    : 'gap-2'
+                }`}>
                   <FoodTypeIndicator type={product.contains} />
                   {product.name[language]}
                 </h3>
-                {/* Price sizes */}
                 {formatPrice(
                   getProductPrice(product),
                   product.currency,
+                  language,
                   product.nutritionalInformation?.calorieCount
                 )}
-                <div className="absolute bottom-2 mobile-440:bottom-4 md:bottom-4 right-4">
+                <div className={`absolute bottom-2 mobile-440:bottom-4 md:bottom-4 ${language === 'ar' ? 'left-4' : 'right-4'}`}>
                   <Image
                     src={
                       product.glbFileUrl
