@@ -3,18 +3,20 @@
 import { useState } from "react";
 import { Product } from "@/types/api";
 import Image from "next/image";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SearchProps {
   onSearch: (query: string) => void;
-  onProductSelect: (productId: string) => void; // Add this
+  onProductSelect: (productId: string) => void;
   products: Product[];
 }
 
 export default function Search({
   onSearch,
-  onProductSelect, // Add here
+  onProductSelect,
   products = [],
 }: SearchProps) {
+  const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (value: string) => {
@@ -29,21 +31,23 @@ export default function Search({
 
   const filteredProducts = searchQuery
     ? products.filter((product) =>
-        product.name.en.toLowerCase().includes(searchQuery.toLowerCase())
+        product.name[language].toLowerCase().includes(searchQuery.toLowerCase())
       )
     : [];
 
   return (
-    <div className="px-8 py-4">
+    <div className={`px-8 py-4 ${language === 'ar' ? 'rtl' : 'ltr'}`}>
       <div className="relative">
         <input
           type="text"
-          placeholder="Search for dishes"
+          placeholder={language === 'ar' ? "ابحث عن الأطباق" : "Search for dishes"}
           value={searchQuery}
-          className="w-full bg-background-secondary text-white/90 px-12 py-3 rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-primary/50 placeholder:text-white/40"
+          className={`w-full bg-background-secondary text-white/90 py-3 rounded-xl outline-none transition-all duration-200 focus:ring-2 focus:ring-primary/50 placeholder:text-white/40 ${
+            language === 'ar' ? 'pl-12 pr-12 text-right' : 'pl-12 pr-12 text-left'
+          }`}
           onChange={(e) => handleSearch(e.target.value)}
         />
-        <div className="absolute left-4 top-1/2 -translate-y-1/2">
+        <div className={`absolute top-1/2 -translate-y-1/2 ${language === 'ar' ? 'right-4' : 'left-4'}`}>
           <svg
             width="20"
             height="20"
@@ -60,9 +64,11 @@ export default function Search({
         {searchQuery && (
           <button
             onClick={handleClear}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-white ${
+              language === 'ar' ? 'left-4' : 'right-4'
+            }`}
           >
-            Cancel
+            {language === 'ar' ? 'إلغاء' : 'Cancel'}
           </button>
         )}
       </div>
@@ -74,7 +80,7 @@ export default function Search({
                 key={product.uniqueId || `${product._id}-${Math.random()}`}
                 className="flex items-center gap-4 p-4 hover:bg-[#2A2B30] cursor-pointer"
                 onClick={() => {
-                  onProductSelect(product._id); // invoke
+                  onProductSelect(product._id);
                   setSearchQuery("");
                   onSearch("");
                 }}
@@ -82,17 +88,17 @@ export default function Search({
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden">
                   <Image
                     src={product.image || "/assets/placeholder.png"}
-                    alt={product.name.en}
+                    alt={product.name[language]}
                     fill
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-white font-medium">{product.name.en}</h3>
+                <h3 className="text-white font-medium">{product.name[language]}</h3>
               </div>
             ))
           ) : (
             <div className="text-gray-400 text-center py-4">
-              No results found
+              {language === 'ar' ? 'لا توجد نتائج' : 'No results found'}
             </div>
           )}
         </div>

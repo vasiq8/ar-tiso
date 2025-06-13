@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useEffect, useRef } from "react";
 
 interface CategoriesProps {
   categories?: {
@@ -22,14 +23,31 @@ export default function Categories({
   onCategorySelect = () => {} 
 }: CategoriesProps) {
   const { language } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (containerRef.current && isFirstRender.current) {
+      if (language === 'ar') {
+        containerRef.current.scrollLeft = containerRef.current.scrollWidth;
+      } else {
+        containerRef.current.scrollLeft = 0;
+      }
+      isFirstRender.current = false;
+    }
+  }, [language]);
 
   if (!categories || categories.length === 0) {
     return null;
   }
 
   return (
-    <div className="overflow-x-auto no-scrollbar">
-      <div className="flex gap-3 px-8 min-w-max">
+    <div className="overflow-x-auto no-scrollbar" ref={containerRef}>
+      <div className={`flex gap-3 min-w-max ${
+        language === 'ar' 
+          ? 'flex-row-reverse pr-8 pl-0' 
+          : 'flex-row pl-8 pr-0'
+      }`}>
         {categories.map((category) => (
           <div
             key={category.categoryRef}
