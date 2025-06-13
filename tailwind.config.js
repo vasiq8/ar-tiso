@@ -30,6 +30,9 @@ module.exports = {
       animation: {
         blink: "blink 1.2s ease-in-out",
       },
+      screens: {
+        'mobile-440': {'max': '440px'},
+      },
     },
   },
   plugins: [],

@@ -51,9 +51,9 @@ const formatPrice = (price: number, currency: string, calories?: number) => {
   const symbol = currency === "₹" ? "₹" : "SAR";
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-orange-500 font-semibold flex items-baseline gap-1">
-        <span className="text-sm">{symbol}</span>
-        <span className="text-lg">{price.toFixed(2)}</span>
+      <div className="text-white font-semibold flex items-baseline gap-1">
+        <span className="text-[10px] sm:text-sm">{symbol}</span>
+        <span className="text-sm sm:text-lg">{price.toFixed(2)}</span>
       </div>
       <div className="flex items-center gap-2">
         <Image
@@ -97,37 +97,41 @@ export default function ProductGrid({
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => (
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        {products.map((product, index) => (
           <div
-            id={`product-${product._id}`}    // Add id
+            id={`product-${product._id}`}
             key={product.uniqueId || `${product._id}-${Math.random()}`}
-            className={`group rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] relative h-[240px] ${blinkedId === product._id ? "animate-blink" : ""}`}
+            className={`group rounded-xl overflow-hidden transition-all duration-300 relative h-[190px] sm:h-[200px] md:h-[240px] ${
+              blinkedId === product._id ? "animate-blink" : ""
+            } ${index % 2 === 0 ? '-ml-4 mr-0.5' : '-mr-4 ml-0.5'} md:ml-0 md:mr-0`}
           >
             <div className="bg-[rgb(35,36,42)] absolute bottom-0 left-0 right-0 h-[70%] rounded-2xl" />
             <div className="relative z-10">
               <div className="p-2">
-                <div className="relative w-[40%] pt-[40%] overflow-hidden mx-auto">
+                <div className="relative w-[50%] sm:w-[45%] pt-[50%] sm:pt-[45%] overflow-hidden mx-auto">
                   <Image
                     src={product.image || "/assets/placeholder.png"}
                     alt={product.name.en}
                     fill
-                    className="object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
+                    className="object-cover rounded-full"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
               </div>
               <div className="p-3 -mt-2 space-y-1 relative">
-                <h3 className="text-lg font-semibold text-white/90 truncate flex items-center gap-2">
+                {/* Text sizes */}
+                <h3 className="text-sm sm:text-lg font-semibold text-white/90 truncate flex items-center gap-2">
                   <FoodTypeIndicator type={product.contains} />
                   {product.name[language]}
                 </h3>
+                {/* Price sizes */}
                 {formatPrice(
                   getProductPrice(product),
                   product.currency,
                   product.nutritionalInformation?.calorieCount
                 )}
-                <div className="absolute bottom-0 right-4">
+                <div className="absolute bottom-2 mobile-440:bottom-4 md:bottom-4 right-4">
                   <Image
                     src={
                       product.glbFileUrl
