@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const redHat = Red_Hat_Display({
   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default function RootLayout({
         ></script>
       </head>
       <body className={`${redHat.className} antialiased`}>
-        <LanguageProvider>{children}</LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

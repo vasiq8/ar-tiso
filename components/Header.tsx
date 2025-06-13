@@ -6,6 +6,7 @@ import Settings from "./Settings";
 import Categories from "@/sections/Categories";
 import Search from "@/sections/Search";
 import { Product, Category } from "@/types/api";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface HeaderProps {
   companyName: string;
@@ -24,6 +25,7 @@ export default function Header({
   activeCategory,
   onProductSelect, // Add here
 }: HeaderProps) {
+  const { theme } = useTheme();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleCategorySelect = (categoryRef: string) => {
@@ -32,11 +34,21 @@ export default function Header({
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 bg-[rgb(23,25,29)] border-b border-gray-800 z-50">
+      <header
+        className={`fixed top-0 left-0 right-0 border-b z-50 transition-colors duration-200 ${
+          theme === "dark"
+            ? "bg-background-dark border-gray-800"
+            : "bg-background-light border-gray-200"
+        }`}
+      >
         <div className="h-28 flex items-center justify-between px-8">
           <div className="w-48 flex items-center">
             <Image
-              src="/assets/black background.png"
+              src={
+                theme === "dark"
+                  ? "/assets/black background.png"
+                  : "/assets/white background.png"
+              }
               alt="Background"
               width={96}
               height={96}
@@ -44,7 +56,11 @@ export default function Header({
               priority
             />
           </div>
-          <h1 className="text-2xl font-bold text-center text-white truncate max-w-md">
+          <h1
+            className={`text-2xl font-bold text-center truncate max-w-md ${
+              theme === "dark" ? "text-white" : "text-black"
+            }`}
+          >
             {companyName}
           </h1>
           <div className="w-40 flex justify-end">

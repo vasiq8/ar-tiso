@@ -11,7 +11,7 @@ interface SearchInputProps {
 
 export function SearchInput({ value, onChange, onClear, language }: SearchInputProps) {
   const { theme } = useTheme();
-  
+
   return (
     <div className="relative">
       <input

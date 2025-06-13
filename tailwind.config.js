@@ -12,11 +12,45 @@ module.exports = {
         primary: '#00BA88',
         secondary: '#FF6B00',
         background: {
-          DEFAULT: 'rgb(23,25,29)',
-          secondary: '#1E1F24',
-          hover: '#2A2B30'
+          dark: 'rgb(23,25,29)',
+          light: '#ffffff',
         },
-        foreground: '#ededed'
+        card: {
+          dark: 'rgb(35,36,42)',
+          light: '#f5f5f5',
+        },
+        search: {
+          dark: '#1E1F24',
+          light: '#ffffff',
+        },
+        category: {
+          dark: 'rgb(35,36,42)',
+          light: '#f0f0f0',
+        },
+        text: {
+          dark: '#ffffff',
+          light: '#000000',
+        },
+        header: {
+          dark: 'rgb(23,25,29)',
+          light: '#ffffff',
+        },
+        modal: {
+          dark: '#1E1F24',
+          light: '#ffffff',
+        },
+        surface: {
+          dark: '#2A2B30',
+          light: '#f8f8f8',
+        },
+        'input-border': {
+          light: 'rgba(0,0,0,0.1)',
+          dark: 'rgba(255,255,255,0.1)'
+        },
+        'hover': {
+          light: 'rgba(0,0,0,0.05)',
+          dark: 'rgba(255,255,255,0.05)'
+        }
       },
       maxHeight: {
         'search-results': '300px',

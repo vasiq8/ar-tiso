@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Product } from "@/types/api";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SearchResult } from "@/components/SearchResult";
-import { SearchInput } from "@/components/ui/SearchInput";
+import { SearchInput } from "@/components/SearchInput";
 import { NoResults } from "@/components/ui/NoResults";
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface SearchProps {
   onSearch: (query: string) => void;
@@ -19,6 +20,7 @@ export default function Search({
   products = [],
 }: SearchProps) {
   const { language } = useLanguage();
+  const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (value: string) => {
@@ -46,7 +48,8 @@ export default function Search({
         language={language}
       />
       {searchQuery && (
-        <div className="mt-4 max-h-search-results overflow-y-auto bg-[#1A1B1F] rounded-xl shadow-xl border border-white/5">
+        <div className={`mt-4 max-h-search-results overflow-y-auto rounded-xl shadow-xl border
+          ${theme === 'dark' ? 'bg-surface-dark border-white/5' : 'bg-surface-light border-black/5'}`}>
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <SearchResult

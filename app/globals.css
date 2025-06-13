@@ -12,13 +12,24 @@
   }
 }
 
-:root {
-  --background: rgb(23,25,29);
-  --foreground: #ededed;
-}
+@layer base {
+  :root {
+    --background: rgb(23,25,29);
+    --text: #ffffff;
+  }
 
-body {
-  @apply bg-background text-white font-sans antialiased;
+  :root[class~="light"] {
+    --background: #ffffff;
+    --text: #000000;
+  }
+
+  body {
+    @apply bg-background-dark text-text-dark transition-colors duration-200;
+  }
+
+  .light body {
+    @apply bg-background-light text-text-light;
+  }
 }
 
 model-viewer {

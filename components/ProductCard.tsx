@@ -5,6 +5,7 @@ import { Product } from "@/types/api";
 import { FoodTypeIndicator } from "./FoodTypeIndicator";
 import { ProductPrice } from "./ProductPrice";
 import { ARButton } from "./ui/ARButton";
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface ProductCardProps {
   product: Product;
@@ -15,6 +16,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, language, isBlinking, index, onARClick }: ProductCardProps) {
+  const { theme } = useTheme();
+
   const getProductPrice = (product: Product): number => {
     if (!product.variants || product.variants.length === 0) return 0;
     return product.variants[0].price || 0;
@@ -23,11 +26,15 @@ export function ProductCard({ product, language, isBlinking, index, onARClick }:
   return (
     <div
       id={`product-${product._id}`}
-      className={`group rounded-xl overflow-hidden transition-all duration-300 relative h-[190px] sm:h-[200px] md:h-[240px] ${
+      className={`group rounded-xl overflow-hidden transition-all duration-300 relative 
+        ${theme === 'dark' ? 'text-white' : 'text-black'}
+        h-[190px] sm:h-[200px] md:h-[240px] ${
         isBlinking ? "animate-blink" : ""
       } ${index % 2 === 0 ? '-ml-4 mr-0.5' : '-mr-4 ml-0.5'} md:ml-0 md:mr-0`}
     >
-      <div className="bg-[rgb(35,36,42)] absolute bottom-0 left-0 right-0 h-[70%] rounded-2xl" />
+      <div className={`absolute bottom-0 left-0 right-0 h-[70%] rounded-2xl 
+        ${theme === 'dark' ? 'bg-card-dark' : 'bg-card-light'}`} 
+      />
       <div className="relative z-10">
         <div className="p-2">
           <div className="relative w-[50%] sm:w-[45%] pt-[50%] sm:pt-[45%] overflow-hidden mx-auto">
@@ -41,7 +48,9 @@ export function ProductCard({ product, language, isBlinking, index, onARClick }:
           </div>
         </div>
         <div className={`p-3 -mt-2 space-y-1 relative ${language === 'ar' ? 'text-right rtl' : ''}`}>
-          <h3 className={`text-sm sm:text-lg font-semibold text-white/90 truncate flex items-center ${
+          <h3 className={`text-sm sm:text-lg font-semibold truncate flex items-center ${
+            theme === 'dark' ? 'text-white/90' : 'text-black'
+          } ${
             language === 'ar' ? 'flex-row-reverse justify-start gap-2 w-full' : 'gap-2'
           }`}>
             <FoodTypeIndicator type={product.contains} />
